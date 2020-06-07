@@ -17,7 +17,7 @@
 @implementation RKTestNotificationObserver
 
 
-+ (void)waitForNotificationWithName:(NSString *)name object:(id)object usingBlock:(void(^)())block
++ (void)waitForNotificationWithName:(NSString *)name object:(id)object usingBlock:(void(^)(void))block
 {
     RKTestNotificationObserver *observer = [RKTestNotificationObserver notificationObserverForName:name object:object];
     [observer addObserver];
@@ -25,7 +25,7 @@
     [observer waitForNotification];
 }
 
-+ (void)waitForNotificationWithName:(NSString *)name usingBlock:(void(^)())block
++ (void)waitForNotificationWithName:(NSString *)name usingBlock:(void(^)(void))block
 {
     [self waitForNotificationWithName:name object:nil usingBlock:block];
 }
@@ -91,7 +91,7 @@
     while (self.isAwaitingNotification) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
         if ([[NSDate date] timeIntervalSinceDate:self.startDate] > self.timeout) {
-            [NSException raise:nil format:@"*** Operation timed out after %f seconds...", self.timeout];
+            [NSException raise:@"" format:@"*** Operation timed out after %f seconds...", self.timeout];
             self.awaitingNotification = NO;
         }
     }
